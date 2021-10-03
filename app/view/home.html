@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title><%=title%></title>
+    <script src="/static/js/three.js"></script>
+    <style>
+        body {
+            margin: 0;
+        }
+        p {
+            text-align: center;
+            width: 100%;
+            height: 10%;
+        }
+    </style>
+</head>
+
+<!--<canvas id="myCanvas"></canvas>-->
+<body>
+    <p><%=message%><p/>
+</body>
+</html>
+<script>
+    var scene = new THREE.Scene({});
+    var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight*0.9);
+    document.body.appendChild( renderer.domElement );
+
+    var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    var cube = new THREE.Mesh( geometry, material );
+    scene.add( cube );
+
+    camera.position.z = 5;
+
+    var animate = function () {
+        requestAnimationFrame( animate );
+
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+
+        renderer.render( scene, camera );
+    };
+
+    animate();
+    console.log(window.innerHeight);
+    console.log(window.innerWidth);
+</script>
+<style>
+    #header {
+        background-color: #000000;
+        color:white;
+        text-align:left;
+        padding:5px;
+    }
+    #nav {
+        line-height:30px;
+        background-color:#eeeeee;
+        height:100%;
+        width:10%;
+        float:left;
+        padding:5px;
+    }
+    button{
+        width:100%;
+        padding:4%;
+    }
+    #chart{
+        float: left;
+        padding:10px;
+    }
+    #footer {
+        background-color:black;
+        color:white;
+        clear:both;
+        opacity: 0.6;
+        text-align:center;
+        padding:5px;
+    }
+</style>
+
+
