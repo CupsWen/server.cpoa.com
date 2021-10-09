@@ -382,7 +382,10 @@
   controls.addEventListener('end', controlsEnd);
 
   // 6.1 背景网格
-  // grid = new THREE.GridHelper(20, 20, 0x000000, 0x000000);
+  // grid = new THREE.Gr
+  //
+  //
+  // e:qsqwsjiwq:idHelper(20, 20, 0x000000, 0x000000);
   // grid.material.opacity = 0.2;
   // grid.material.transparent = true;
   // grid.receiveShadow = true;
@@ -401,6 +404,7 @@
   ground.receiveShadow = true;
   ground.position.set(0, 0, -0.5);
   scene.add(ground);
+
   // 6.4 区块链(立方体)
   blockChain = new BlockChain(blockMaterial, chainMaterial, 13);
 
