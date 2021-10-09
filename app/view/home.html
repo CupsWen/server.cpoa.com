@@ -364,7 +364,7 @@
 
   // 3. 摄像机(透视相机)
   camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, -9, 2);
+  camera.position.set(0, -9, 5);
   camera.lookAt(0, 0, 0);
 
   // 4. 渲染器
@@ -409,14 +409,18 @@
   let interval;
   let folderLocal = gui.addFolder('按钮');
   let params = {
+    登录or注册: function() {
+      window.location.href = './login');
+    },
     startAnimation: function() {
       if (interval) clearInterval(interval);
       interval = window.setInterval(blockChainAnimation, 1000);
     },
     stopAnimation: function() {
       clearInterval(interval);
-    }
+    },
   };
+  folderLocal.add(params, '登录or注册');
   folderLocal.add(params, 'startAnimation');
   folderLocal.add(params, 'stopAnimation');
   folderLocal.open();
