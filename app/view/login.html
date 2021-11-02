@@ -10,16 +10,16 @@
 <body>
 <div class="container" id="container">
     <div class="form-container sign-in-container">
-        <form action="#">
+        <form action="/login" method="post">
             <h1>登 录</h1>
-            <input type="email" placeholder="邮箱"/>
-            <input type="password" placeholder="密码"/>
+            <input name="email" type="email" placeholder="邮箱" required="required"/>
+            <input name="password" type="password" placeholder="密码" required="required"/>
             <a href="#">忘记密码?</a>
-            <button>登 录</button>
+            <button type="submit">登 录</button>
         </form>
     </div>
     <div class="form-container sign-up-container">
-        <form action="#">
+        <form action="#" method="post">
             <h1>注册帐户</h1>
             <input type="email" placeholder="邮箱"/>
             <input type="password" placeholder="密码"/>

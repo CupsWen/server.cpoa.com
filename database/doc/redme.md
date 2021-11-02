@@ -514,17 +514,11 @@
 
 ![](./images/表的水平拆分.jpg)
 
-# 我的数据库设计
+# 数据库设计
 
 ## （一）需求分析
 
-### 1、系统中所要存储的数据
-
-> 1、用户端，秘钥管理（秘钥名称、公钥、私钥）
->
-> 2、服务器端，用户管理模块，版权管理模块。
-
-**1、用户**
+### （1）用户
 
 > 用于记录用户信息
 >
@@ -534,7 +528,7 @@
 >
 > **存储特点**：随系统上线时间逐渐增加，需要永久存储
 
-**2、身份**
+### （2）身份
 
 > 用于记录用户的实名认证信息
 >
@@ -544,7 +538,7 @@
 >
 > **存储特点**：随系统上线时间逐渐增加，需要永久存储
 
-**3、公钥**
+### （3）公钥
 
 > 用于记录用户所持有的公钥
 >
@@ -554,7 +548,7 @@
 >
 > **存储特点**：用户会对公钥进行更新，随系统上线时间逐渐增加，需要永久存储
 
-**4、版权**
+### （4）版权
 
 > 用于记录版权信息
 >
@@ -564,19 +558,98 @@
 >
 > **存储特点**：随系统上线时间逐渐增加，需要永久存储
 
+## （二）逻辑设计
 
+![](./images/ER图.png)
 
-| 字段名称            | 数据类型 | 长度 | 是否允许为空 | 是否为主键 | 字段说明   |
-| ------------------- | -------- | ---- | ------------ | ---------- | ---------- |
-| userInfoEmail       | char     | 32   | 否           | 是         | 用户邮箱   |
-| userInfoPhoneNumber | char     | 11   | 是           | 是         | 用户手机号 |
-| userInfoIdCard      | char     |      |              |            |            |
-|                     |          |      |              |            |            |
-|                     |          |      |              |            |            |
-|                     |          |      |              |            |            |
-| userInfoPassword    |          |      |              |            |            |
+## （三）物理设计
 
+![](./images/数据库设计.png)
 
+###   （1）user
 
-npx sequelize model:generate --name Todo --attributes name:string,deadline:date,content:string
+| 字段名称        | 数据类型 | 是否允许为空 | 是否为主键 | 字段说明                |
+| --------------- | -------- | ------------ | ---------- | ----------------------- |
+| email           | char(32) | 否           | 是         | 用户邮箱                |
+| password        | char(64) | 否           | 否         | 用户密码的哈希值（MD5） |
+| isAuthenticated | bool     | 否           | 否         | 用户是否实名认证        |
+| idCard          | char(18) | 否           | 否         | 用户身份证号码          |
+
+### （2）identity
+
+| 字段名称    | 数据类型  | 是否允许为空 | 是否为主键 | 字段说明       |
+| ----------- | --------- | ------------ | ---------- | -------------- |
+| idCard      | char(18)  | 否           | 是         | 用户身份证号码 |
+| phoneNumber | char(11)  | 是           | 是         | 用户手机号     |
+| userName    | char(20)  | 是           | 否         | 用户名称       |
+| userAddress | char(30)  | 是           | 否         | 用户地址       |
+| publicKey   | char(181) | 是           | 否         | 用户公钥       |
+
+### （3）work
+
+| 字段名称    | 数据类型  | 是否允许为空 | 是否为主键 | 字段说明       |
+| ----------- | --------- | ------------ | ---------- | -------------- |
+| workHash    | char(64)  | 否           | 是         | 用户身份证号码 |
+| publicKey   | char(181) | 是           | 否         | 用户公钥       |
+| phoneNumber | char(11)  | 是           | 是         | 用户手机号     |
+| workName    | char(20)  | 是           | 否         | 用户名称       |
+| workAddress | char(64)  | 是           | 否         | 用户地址       |
+
+## （四）命令行
+
+### （1）npm install --save sequelize sequelize-cli
+
+### （2）npx sequelize-cli init
+
+```shell
+# 配置数据库 config/config.json
+{
+  "development": {
+    "username": "root",
+    "password": "123456789",
+    "database": "server",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "timezone": "+08:00"
+  },
+  "test": {
+    "username": "root",
+    "password": "123456789",
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "123456789",
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
+```
+
+### （3）创建model
+
+> 生成user.js/identity.js/work.js
+
+```shell
+# user
+# email:CHAR(32),password:CHAR(64),isAuthenticated:BOOLEAN(),idCard:CHAR(18)
+npx sequelize model:generate --name user --attributes email:char,password:char,isAuthenticated:char,idCard:char --force 
+# identity
+# idCard:char(18),phoneNumber:char(11),userName:char(20),userAddress:char(20),publicKey:char(181)
+npx sequelize model:generate --name identity --attributes idCard:char,phoneNumber:char,userName:char,userAddress:char,publicKey:char --force 
+# work
+# workHash:char(64),publicKey:char(181),phoneNumber:char(11),workName:char(11),workAddress:char(20)
+npx sequelize model:generate --name work --attributes workHash:char,publicKey:char,phoneNumber:char,workName:char,workAddress:char --force 
+```
+
+> 修改具体的数据类型和长度user.js/identity.js/work.js
+
+### （4）初始化模型对应的数据库表
+
+```shell
+npx sequelize db:migrate
+```
 
