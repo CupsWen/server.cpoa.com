@@ -1,0 +1,136 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<center>
+    <div id="login">
+        <label class="ui_button ui_button_primary" for="uploadPictures">
+            <img id="imgContainer" src="http://127.0.0.1:8000/static?image=uploadPictures.png"
+                 style="width: 300px; height: 300px">
+        </label>
+        <form>
+            <input id="uploadPictures" style="position:absolute;clip:rect(0 0 0 0);" type="file"
+                   accept="image/gif, image/jpg, image/png, image/jpeg" onchange="uploadPic(this)">
+        </form>
+        <p id="workHash" contenteditable="true" style="width: 600px; text-align:left; color:white"><p/>
+        <p id="workName" contenteditable="true" style="width: 600px; text-align:left; color:white"><p/>
+        <p id="publicKey" contenteditable="true" style="width: 600px; text-align:left; color:white"><p/>
+        <p id="workAddress" contenteditable="true" style="width: 600px; text-align:left; color:white"><p/>
+        <input id="workDescribe" type="text" maxlength="200" required="required" placeholder="请输入作品描述" style="display:none"/>
+        <button class="but" id="enregisterWork" style="display:none" onclick="enregisterWork()">版权登记</button>
+    </div>
+</center>
+</body>
+</html>
+
+<script type="text/javascript">
+  function uploadPic(obj) {
+    let file = obj.files[0]
+    let formData = new FormData();
+    formData.append("file", file);
+    axios({
+      method: "POST",
+      url: "/uploadPicture",
+      data:formData
+    })
+      .then(function (response) {
+        if (response.status==200){
+          /**
+           * 显示文件上传IPFS结果
+           * **/
+          document.getElementById("workHash").innerText = "作品地址:" + response.data.hash;
+          document.getElementById("workName").innerText = "作品名称:" + response.data.workName;
+          document.getElementById("workType").innerText = "作品类型:" + response.data.workType;
+          document.getElementById("endDate").innerText = "完成时间:" + response.data.endDate;
+          /**
+           *  版权登记按钮可见
+           * **/
+          if (document.getElementById("enregisterWork").style.display=="none"){
+            document.getElementById("enregisterWork").style.display = "block";
+          }
+          if (document.getElementById("workDescribe").style.display=="none"){
+            document.getElementById("workDescribe").style.display = "block";
+          }
+
+          /**
+           * 读取并显示图片
+           *
+           * **/
+          var reader = new FileReader()
+          reader.onload = function(e) {
+            document.getElementById("imgContainer").src = e.target.result
+          }
+          reader.readAsDataURL(file)
+        }else {
+          alert(response.status);
+        }
+      }, function (error){
+        alert(error.toString());
+      })
+  }
+</script>
+
+<style>
+    body {
+        width: 100%;
+        height: 100%;
+        font-family: 'Open Sans', sans-serif;
+        margin: 0;
+        background-color: #4A374A;
+    }
+
+    #login {
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        margin: -150px 0 0 -150px;
+        width: 300px;
+        height: 300px;
+    }
+
+    #login h1 {
+        color: #fff;
+        text-shadow: 0 0 10px;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 2em;
+        margin: 0.67em 0;
+    }
+
+    input {
+        width: 500px;
+        height: 80px;
+        margin-bottom: 10px;
+        outline: none;
+        padding: 10px;
+        font-size: 13px;
+        color: #fff;
+        text-shadow: 1px 1px 1px;
+        border-top: 1px solid #312E3D;
+        border-left: 1px solid #312E3D;
+        border-right: 1px solid #312E3D;
+        border-bottom: 1px solid #56536A;
+        border-radius: 4px;
+        background-color: #2D2D3F;
+    }
+
+    .but {
+        width: 500px;
+        min-height: 20px;
+        display: block;
+        background-color: #4a77d4;
+        border: 1px solid #3762bc;
+        color: #fff;
+        padding: 9px 14px;
+        font-size: 15px;
+        line-height: normal;
+        border-radius: 5px;
+        margin: 0;
+    }
+</style>
+

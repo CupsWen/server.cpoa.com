@@ -15,6 +15,7 @@
     "egg-sequelize": "^6.0.0",
     "egg-view-ejs": "^2.0.1",
     "egg-view-vue": "^1.0.0",
+    "md5": "^2.3.0",
     "mysql2": "^2.3.0"
   },
   "devDependencies": {

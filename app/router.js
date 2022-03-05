@@ -10,4 +10,7 @@ module.exports = app => {
   router.get('/login', controller.login.showPage);
   router.post('/login', controller.login.login);
   router.get('/console', controller.console.showPage);
+  router.get('/static', controller.static.get);
+  router.post('/uploadPicture', controller.uploadPicture.post)
+  router.post('/authentication', controller.authentication.authentication)
 };

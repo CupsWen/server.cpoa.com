@@ -10,17 +10,17 @@ module.exports = {
       password: {
         type: Sequelize.CHAR(64)
       },
-      is_authenticated: {
+      isAuthenticated: {
         type: Sequelize.INTEGER(1)
       },
-      id_card: {
+      idCard: {
         type: Sequelize.CHAR(18)
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }
