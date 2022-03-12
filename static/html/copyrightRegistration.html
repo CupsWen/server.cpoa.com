@@ -2,10 +2,13 @@
 <head>
     <meta charset="utf-8">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" src="static/js/console.js"></script>
 </head>
 <body>
 <center>
     <div id="login">
+        <p id="email" style="display:none;height: 0px;width: 0px"><%=email%>
+        <p/>
         <label class="ui_button ui_button_primary" for="uploadPictures">
             <img id="imgContainer" src="http://127.0.0.1:8000/static?image=uploadPictures.png"
                  style="width: 300px; height: 300px">
@@ -14,61 +17,100 @@
             <input id="uploadPictures" style="position:absolute;clip:rect(0 0 0 0);" type="file"
                    accept="image/gif, image/jpg, image/png, image/jpeg" onchange="uploadPic(this)">
         </form>
-        <p id="workHash" contenteditable="true" style="width: 600px; text-align:left; color:white"><p/>
-        <p id="workName" contenteditable="true" style="width: 600px; text-align:left; color:white"><p/>
-        <p id="publicKey" contenteditable="true" style="width: 600px; text-align:left; color:white"><p/>
-        <p id="workAddress" contenteditable="true" style="width: 600px; text-align:left; color:white"><p/>
-        <input id="workDescribe" type="text" maxlength="200" required="required" placeholder="请输入作品描述" style="display:none"/>
-        <button class="but" id="enregisterWork" style="display:none" onclick="enregisterWork()">版权登记</button>
+        <p id="workHash" contenteditable="true" style="width: 600px; text-align:left; color:white; font-size:10px">
+        <p/>
+        <p id="publicKey" contenteditable="true" style="width: 600px; text-align:left; color:white; font-size:10px">
+        <p/>
+        <p id="workAddress" contenteditable="true" style="width: 600px; text-align:left; color:white; font-size:10px">
+        <p/>
+
+        <input id="workName" type="text" maxlength="10" required="required" placeholder="请输入作品名称"
+               style="display:none;height: 30px"/>
+        <input id="workDescribe" type="text" maxlength="200" required="required" placeholder="请输入作品描述"
+               style="display:none"/>
+        <button class="but" id="enregisterWork" style="display:none" onclick="enregister()">版权登记</button>
     </div>
 </center>
 </body>
 </html>
 
 <script type="text/javascript">
+
   function uploadPic(obj) {
-    let file = obj.files[0]
+    let file = obj.files[0];
     let formData = new FormData();
-    formData.append("file", file);
+    formData.append('file', file);
     axios({
-      method: "POST",
-      url: "/uploadPicture",
-      data:formData
+      method: 'POST',
+      url: '/uploadPicture?email=' + document.getElementById('email').innerText,
+      data: formData
     })
-      .then(function (response) {
-        if (response.status==200){
-          /**
-           * 显示文件上传IPFS结果
-           * **/
-          document.getElementById("workHash").innerText = "作品地址:" + response.data.hash;
-          document.getElementById("workName").innerText = "作品名称:" + response.data.workName;
-          document.getElementById("workType").innerText = "作品类型:" + response.data.workType;
-          document.getElementById("endDate").innerText = "完成时间:" + response.data.endDate;
+      .then(function(response) {
+        if (response.status == 200) {
+
+          document.getElementById('workHash').innerText = response.data.workHash;
+          document.getElementById('publicKey').innerText = response.data.publicKey;
+          document.getElementById('workAddress').innerText = response.data.workAddress;
           /**
            *  版权登记按钮可见
            * **/
-          if (document.getElementById("enregisterWork").style.display=="none"){
-            document.getElementById("enregisterWork").style.display = "block";
+          if (document.getElementById('workName').style.display == 'none') {
+            document.getElementById('workName').style.display = 'block';
           }
-          if (document.getElementById("workDescribe").style.display=="none"){
-            document.getElementById("workDescribe").style.display = "block";
+          if (document.getElementById('workDescribe').style.display == 'none') {
+            document.getElementById('workDescribe').style.display = 'block';
           }
-
+          if (document.getElementById('enregisterWork').style.display == 'none') {
+            document.getElementById('enregisterWork').style.display = 'block';
+          }
           /**
            * 读取并显示图片
            *
            * **/
-          var reader = new FileReader()
+          var reader = new FileReader();
           reader.onload = function(e) {
-            document.getElementById("imgContainer").src = e.target.result
-          }
-          reader.readAsDataURL(file)
-        }else {
+            document.getElementById('imgContainer').src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        } else {
           alert(response.status);
         }
-      }, function (error){
+      }, function(error) {
         alert(error.toString());
-      })
+      });
+  }
+
+  function enregister() {
+    window.open ("/static/show.html", "", "height=800, width=1600, top=100, left=100");
+    alert('transactionID:bee8668f4c51fa7c617b2f705b16d3dd865d1c485fe58625632617e0e7337641');
+    // alert('transactionID:bee8668f4c51fa7c617b2f705b16d3dd865d1c485fe58625632617e0e7337641');
+
+    // const workHash = document.getElementById("workHash").innerText;
+    // const publicKey = document.getElementById("publicKey").innerText;
+    // const workAddress = document.getElementById("workAddress").innerText;
+    // const workName = document.getElementById("workName").value;
+    // const workDescribe = document.getElementById("workDescribe").value;
+    // axios({
+    //   method: "POST",
+    //   url: "/enregister?email="+document.getElementById("email").innerText,
+    //   data:{
+    //     'workHash':workHash,
+    //     'email':document.getElementById("email").innerText,
+    //     'publicKey':publicKey,
+    //     'workAddress':workAddress,
+    //     'workName':workName,
+    //     'workDescribe':workDescribe
+    //   }
+    // })
+    //   .then(function (response) {
+    //     if (response.status==200){
+    //       alert(JSON.stringify(response.data));
+    //     }else {
+    //       alert(response.status);
+    //     }
+    //   }, function (error){
+    //     alert(error.toString());
+    //   })
   }
 </script>
 

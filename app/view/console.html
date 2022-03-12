@@ -52,7 +52,7 @@
                             <cite>个人信息</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('实名认证','/static?html=authentication.html')">
+                        <a onclick="xadmin.add_tab('实名认证','/static?html=authentication.html&email=<%=email%>')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>实名认证</cite>
                         </a>
@@ -78,13 +78,13 @@
                             <cite>我的版权</cite></a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('版权登记','/static?html=copyrightRegistration.html')">
+                        <a onclick="xadmin.add_tab('版权登记','/static?html=copyrightRegistration.html&email=<%=email%>')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>版权登记</cite>
                         </a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('版权查询','member-del.html')">
+                        <a onclick="xadmin.add_tab('版权查询','/static?html=copyrightQuery.html&email=<%=email%>')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>版权查询</cite>
                         </a>

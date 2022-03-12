@@ -11,7 +11,7 @@
     <br/>
     <br/>
     <br/>
-    <br/>
+    <p id="email" style="display:none"><%=email%><p/>
     <br/>
     <input id="randomNumber" type="text" maxlength="200" required="required" placeholder="随机数"/>
     <br/>
@@ -32,6 +32,7 @@
     document.getElementById("randomNumber").value = Math.random()*10**17;
     function authentication() {
       const randomNumber = document.getElementById("randomNumber").value;
+      const email = document.getElementById("email").innerText;
       const userName = document.getElementById("userName").value;
       const idCard = document.getElementById("idCard").value;
       const publicKey = document.getElementById("publicKey").value;
@@ -47,6 +48,7 @@
         url: "/authentication",
         data:{
           'randomNumber':randomNumber,
+          'email': email,
           'userName':userName,
           'idCard':idCard,
           'publicKey':publicKey,
@@ -55,12 +57,12 @@
         if (response.status==200){
           // 52176006785293620
          /*
-           -----BEGIN PUBLIC KEY-----
-            MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKmTlv0L+l1svwPKxwKvKpBZwWaPRRFP
-          KsWLfMWkoDuQtrVOrsoLvaVArhbKyBpWdz/ggrxlQd3gPqyzjgxQHGkCAwEAAQ==
-          -----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKmTlv0L+l1svwPKxwKvKpBZwWaPRRFP
+KsWLfMWkoDuQtrVOrsoLvaVArhbKyBpWdz/ggrxlQd3gPqyzjgxQHGkCAwEAAQ==
+-----END PUBLIC KEY-----
           */
-          alert("实名认证成功");
+          alert(JSON.stringify(response.data));
         }else {
           alert(response.status);
         }

@@ -11,6 +11,7 @@ module.exports = app => {
   router.post('/login', controller.login.login);
   router.get('/console', controller.console.showPage);
   router.get('/static', controller.static.get);
-  router.post('/uploadPicture', controller.uploadPicture.post)
-  router.post('/authentication', controller.authentication.authentication)
+  router.post('/uploadPicture', controller.uploadPicture.post);
+  router.post('/authentication', controller.authentication.authentication);
+  router.post('/enregister', controller.enregister.enregister);
 };

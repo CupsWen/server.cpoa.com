@@ -1,0 +1,114 @@
+{
+	"name": "RegisterOfCopyright",
+	"version": "1.0.0",
+	"client": {
+		"organization": "CPOAMSP",
+		"connection": {
+			"timeout": {
+				"peer": {
+					"endorser": "300"
+				}
+			}
+		}
+	},
+	"organizations": {
+		"CPOA": {
+			"mspid": "CPOAMSP",
+			"peers": [
+				"peer0.cpoa.com"
+			]
+		},
+		"CPOB": {
+			"mspid": "CPOBMSP",
+			"peers": [
+				"peer0.cpob.com"
+			]
+		},
+		"CPOC": {
+			"mspid": "CPOCMSP",
+			"peers": [
+				"peer0.cpoc.com"
+			]
+		},
+		"JO": {
+			"mspid": "JOMSP",
+			"peers": [
+				"peer0.jo.com"
+			]
+		}
+	},
+	"orderers": {
+		"cpoa.order.com": {
+			"url": "grpcs://cpoa.order.com:7050",
+			"tlsCACerts": {
+				"pem": "-----BEGIN CERTIFICATE-----\nMIICKTCCAc+gAwIBAgIQDdOPCQ2w2K53eUhh1W8TRDAKBggqhkjOPQQDAjBfMQsw\nCQYDVQQGEwJDTjEOMAwGA1UECBMFSGVOYW4xEjAQBgNVBAcTCVpoZW5nWmhvdTES\nMBAGA1UEChMJb3JkZXIuY29tMRgwFgYDVQQDEw90bHNjYS5vcmRlci5jb20wHhcN\nMjEwODA1MDk0OTAwWhcNMzEwODAzMDk0OTAwWjBfMQswCQYDVQQGEwJDTjEOMAwG\nA1UECBMFSGVOYW4xEjAQBgNVBAcTCVpoZW5nWmhvdTESMBAGA1UEChMJb3JkZXIu\nY29tMRgwFgYDVQQDEw90bHNjYS5vcmRlci5jb20wWTATBgcqhkjOPQIBBggqhkjO\nPQMBBwNCAAQBI0zhcug9lAzd6Ejox1dUd5keCdzBWTghzlvILIaigMBOr4UFwF0d\nV5yZ6xz1A5i+SHcIkbyJTFSdL5NZBgfso20wazAOBgNVHQ8BAf8EBAMCAaYwHQYD\nVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYD\nVR0OBCIEIG0XQ8QplsU7HSEx6RbZxU2GkItUispjEigz6LDiHNNcMAoGCCqGSM49\nBAMCA0gAMEUCIQDxJ4cvttlC9kcVMXeYJc8yHCUNxYChGmmj1fKH6M5KzAIgasuL\nyqaj3lxojlkBBcXdjMGhGvob5oajkqUnjkeo2zU=\n-----END CERTIFICATE-----"
+			},
+			"grpcOptions": {
+				"ssl-target-name-override": "cpoa.order.com",
+				"hostnameOverride": "cpoa.order.com"
+			}
+		},
+		"cpob.order.com": {
+			"url": "grpcs://cpob.order.com:7050",
+			"tlsCACerts": {
+				"pem": "-----BEGIN CERTIFICATE-----\nMIICKTCCAc+gAwIBAgIQDdOPCQ2w2K53eUhh1W8TRDAKBggqhkjOPQQDAjBfMQsw\nCQYDVQQGEwJDTjEOMAwGA1UECBMFSGVOYW4xEjAQBgNVBAcTCVpoZW5nWmhvdTES\nMBAGA1UEChMJb3JkZXIuY29tMRgwFgYDVQQDEw90bHNjYS5vcmRlci5jb20wHhcN\nMjEwODA1MDk0OTAwWhcNMzEwODAzMDk0OTAwWjBfMQswCQYDVQQGEwJDTjEOMAwG\nA1UECBMFSGVOYW4xEjAQBgNVBAcTCVpoZW5nWmhvdTESMBAGA1UEChMJb3JkZXIu\nY29tMRgwFgYDVQQDEw90bHNjYS5vcmRlci5jb20wWTATBgcqhkjOPQIBBggqhkjO\nPQMBBwNCAAQBI0zhcug9lAzd6Ejox1dUd5keCdzBWTghzlvILIaigMBOr4UFwF0d\nV5yZ6xz1A5i+SHcIkbyJTFSdL5NZBgfso20wazAOBgNVHQ8BAf8EBAMCAaYwHQYD\nVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYD\nVR0OBCIEIG0XQ8QplsU7HSEx6RbZxU2GkItUispjEigz6LDiHNNcMAoGCCqGSM49\nBAMCA0gAMEUCIQDxJ4cvttlC9kcVMXeYJc8yHCUNxYChGmmj1fKH6M5KzAIgasuL\nyqaj3lxojlkBBcXdjMGhGvob5oajkqUnjkeo2zU=\n-----END CERTIFICATE-----"
+			},
+			"grpcOptions": {
+				"ssl-target-name-override": "cpob.order.com",
+				"hostnameOverride": "cpob.order.com"
+			}
+		},
+		"cpoc.order.com": {
+			"url": "grpcs://cpoc.order.com:7050",
+			"tlsCACerts": {
+				"pem":"-----BEGIN CERTIFICATE-----\nMIICKTCCAc+gAwIBAgIQDdOPCQ2w2K53eUhh1W8TRDAKBggqhkjOPQQDAjBfMQsw\nCQYDVQQGEwJDTjEOMAwGA1UECBMFSGVOYW4xEjAQBgNVBAcTCVpoZW5nWmhvdTES\nMBAGA1UEChMJb3JkZXIuY29tMRgwFgYDVQQDEw90bHNjYS5vcmRlci5jb20wHhcN\nMjEwODA1MDk0OTAwWhcNMzEwODAzMDk0OTAwWjBfMQswCQYDVQQGEwJDTjEOMAwG\nA1UECBMFSGVOYW4xEjAQBgNVBAcTCVpoZW5nWmhvdTESMBAGA1UEChMJb3JkZXIu\nY29tMRgwFgYDVQQDEw90bHNjYS5vcmRlci5jb20wWTATBgcqhkjOPQIBBggqhkjO\nPQMBBwNCAAQBI0zhcug9lAzd6Ejox1dUd5keCdzBWTghzlvILIaigMBOr4UFwF0d\nV5yZ6xz1A5i+SHcIkbyJTFSdL5NZBgfso20wazAOBgNVHQ8BAf8EBAMCAaYwHQYD\nVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYD\nVR0OBCIEIG0XQ8QplsU7HSEx6RbZxU2GkItUispjEigz6LDiHNNcMAoGCCqGSM49\nBAMCA0gAMEUCIQDxJ4cvttlC9kcVMXeYJc8yHCUNxYChGmmj1fKH6M5KzAIgasuL\nyqaj3lxojlkBBcXdjMGhGvob5oajkqUnjkeo2zU=\n-----END CERTIFICATE-----"
+			},
+			"grpcOptions": {
+				"ssl-target-name-override": "cpoc.order.com",
+				"hostnameOverride": "cpoc.order.com"
+			}
+		}
+	},
+	"peers": {
+		"peer0.cpoa.com": {
+			"url": "grpcs://peer0.cpoa.com:7051",
+			"tlsCACerts": {
+				"pem":"-----BEGIN CERTIFICATE-----\nMIICJTCCAcygAwIBAgIRAJ753b9pE9Q4X1tnZrIIdsQwCgYIKoZIzj0EAwIwXTEL\nMAkGA1UEBhMCQ04xDjAMBgNVBAgTBUhlTmFuMRIwEAYDVQQHEwlaaGVuZ1pob3Ux\nETAPBgNVBAoTCGNwb2EuY29tMRcwFQYDVQQDEw50bHNjYS5jcG9hLmNvbTAeFw0y\nMTA4MDUwOTQ5MDBaFw0zMTA4MDMwOTQ5MDBaMF0xCzAJBgNVBAYTAkNOMQ4wDAYD\nVQQIEwVIZU5hbjESMBAGA1UEBxMJWmhlbmdaaG91MREwDwYDVQQKEwhjcG9hLmNv\nbTEXMBUGA1UEAxMOdGxzY2EuY3BvYS5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMB\nBwNCAARzXlL4M+TvQiWhYUxd38IIk9yol3BHIlDWyz0bZB1ufTtTvY2Rbtz7hf47\nvf++SlJeVfbASUHzomIg1GRCqB0Io20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0l\nBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0O\nBCIEIPKrInPx7L/yqUm9qRXwp2z61u8jaTxoS8tyZRcqxTQBMAoGCCqGSM49BAMC\nA0cAMEQCIFmwhKHoaNP5UiW1LaB3DLsrqZDydUbYr+hc6DJlXYiLAiBMIgOUTzpu\nlNUMZiEbefsDb+Ah2ArD/dtG/NZH0aS0Lg==\n-----END CERTIFICATE-----"
+			},
+			"grpcOptions": {
+				"ssl-target-name-override": "peer0.cpoa.com",
+				"hostnameOverride": "peer0.cpoa.com"
+			}
+		},
+		"peer0.cpob.com": {
+			"url": "grpcs://peer0.cpob.com:7051",
+			"tlsCACerts": {
+				"pem": "-----BEGIN CERTIFICATE-----\nMIICJTCCAcygAwIBAgIRAK6V4CIXAPR1cyv6ga/HE3QwCgYIKoZIzj0EAwIwXTEL\nMAkGA1UEBhMCQ04xDjAMBgNVBAgTBUhlTmFuMRIwEAYDVQQHEwlaaGVuZ1pob3Ux\nETAPBgNVBAoTCGNwb2IuY29tMRcwFQYDVQQDEw50bHNjYS5jcG9iLmNvbTAeFw0y\nMTA4MDUwOTQ5MDBaFw0zMTA4MDMwOTQ5MDBaMF0xCzAJBgNVBAYTAkNOMQ4wDAYD\nVQQIEwVIZU5hbjESMBAGA1UEBxMJWmhlbmdaaG91MREwDwYDVQQKEwhjcG9iLmNv\nbTEXMBUGA1UEAxMOdGxzY2EuY3BvYi5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMB\nBwNCAAQAu55yZz94pqeHaEA4Q5BtEuAhBZCvuU+BREWPH4qLnt13hdue1rx8yDBX\nr3JHww22JMrU9xgFE6wo3WS7AApso20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0l\nBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0O\nBCIEIFmQJe4k6a+VgUhggdYHNgrauc1ieLWm7z9yYs53kShRMAoGCCqGSM49BAMC\nA0cAMEQCIHI8sS3RbfLF2qxq+ka80NULV7XZ7ATNjep9Etg/2l5uAiBqLfIXQwJi\nvHvV9957yra53YwdG4VkbKDcG+HjlOeSvA==\n-----END CERTIFICATE-----"
+			},
+			"grpcOptions": {
+				"ssl-target-name-override": "peer0.cpob.com",
+				"hostnameOverride": "peer0.cpob.com"
+			}
+		},
+		"peer0.cpoc.com": {
+			"url": "grpcs://peer0.cpoc.com:7051",
+			"tlsCACerts": {
+				"pem": "-----BEGIN CERTIFICATE-----\nMIICJjCCAcygAwIBAgIRAKU+WCavdMd7Ds0fOcBAvFQwCgYIKoZIzj0EAwIwXTEL\nMAkGA1UEBhMCQ04xDjAMBgNVBAgTBUhlTmFuMRIwEAYDVQQHEwlaaGVuZ1pob3Ux\nETAPBgNVBAoTCGNwb2MuY29tMRcwFQYDVQQDEw50bHNjYS5jcG9jLmNvbTAeFw0y\nMTA4MDUwOTQ5MDBaFw0zMTA4MDMwOTQ5MDBaMF0xCzAJBgNVBAYTAkNOMQ4wDAYD\nVQQIEwVIZU5hbjESMBAGA1UEBxMJWmhlbmdaaG91MREwDwYDVQQKEwhjcG9jLmNv\nbTEXMBUGA1UEAxMOdGxzY2EuY3BvYy5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMB\nBwNCAARn1ycKsjH4yTnkmtCqzJRXafk2xqtfsrBhrLRLLJJ+QVMS/Fb7fCbSH6yE\nIUs0fxJ7i4oNWDWJTOi73u+5ZMD5o20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0l\nBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0O\nBCIEIHacpnchzR1sMeSQpSJ+RmyOljqxcpOEgnx2VZNTpbxAMAoGCCqGSM49BAMC\nA0gAMEUCIQCKGiKcv/lIr8ADvU53I3nY9OM4msb8ayrV1cRhjdTUJQIgYTaASchM\nr/IfFnJ6OO4HCCdOziXPCQTwYjjwsAFgQ4k=\n-----END CERTIFICATE-----"
+			},
+			"grpcOptions": {
+				"ssl-target-name-override": "peer0.cpoc.com",
+				"hostnameOverride": "peer0.cpoc.com"
+			}
+		},
+		"peer0.jo.com": {
+			"url": "grpcs://peer0.jo.com:7051",
+			"tlsCACerts": {
+				"pem":"-----BEGIN CERTIFICATE-----\nMIICHDCCAcOgAwIBAgIQOlGnjLhsuJSHyam2YSlb6TAKBggqhkjOPQQDAjBZMQsw\nCQYDVQQGEwJDTjEOMAwGA1UECBMFSGVOYW4xEjAQBgNVBAcTCVpoZW5nWmhvdTEP\nMA0GA1UEChMGam8uY29tMRUwEwYDVQQDEwx0bHNjYS5qby5jb20wHhcNMjEwODA1\nMDk0OTAwWhcNMzEwODAzMDk0OTAwWjBZMQswCQYDVQQGEwJDTjEOMAwGA1UECBMF\nSGVOYW4xEjAQBgNVBAcTCVpoZW5nWmhvdTEPMA0GA1UEChMGam8uY29tMRUwEwYD\nVQQDEwx0bHNjYS5qby5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAS26xBz\n4aQaJDwuWFeAftmkRF4lzGILzgKzZBX/5M/PMWN/ind9N/cVAXsrO0EDiS0QeYuf\nq9igfYwrSyuRetgjo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYB\nBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIIWbMwAg\nv8iLaTQclOwgr+5BggmBgawcecA7qqh1TaoAMAoGCCqGSM49BAMCA0cAMEQCIBMI\n7nt1dyovQEfrjFTuek9RRxWu1uwtSVJcKCqpLu28AiBuB3Rs0Q8sSFxXaCkLSGad\ngacsXWe4a5Le7+jmeqTofw==\n-----END CERTIFICATE-----"
+			},
+			"grpcOptions": {
+				"ssl-target-name-override": "peer0.jo.com",
+				"hostnameOverride": "peer0.jo.com"
+			}
+		}
+	}
+}

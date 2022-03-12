@@ -7,19 +7,34 @@ const Controller = require('egg').Controller;
 class authenticationController extends Controller {
   async authentication() {
     const {ctx} = this;
-    let {randomNumber, userName, idCard, publicKey, signature} = ctx.request.body;
+    let {randomNumber, email, userName, idCard, publicKey, signature} = ctx.request.body;
     const verifyResult = publicDecrypt(signature, publicKey, 'hex', 'utf8');
-    console.log(randomNumber, userName, idCard, publicKey, signature, verifyResult);
+    console.log(randomNumber, email, userName, idCard, publicKey, signature, verifyResult);
     if (verifyResult > 0){
-      await ctx.model.Indentity.create({
-        idCard,
-        userName,
-        publicKey
+      const identity = await ctx.model.Identity.findOne({
+        idCard: idCard
       });
-      // await ctx.model.User
-      ctx.body = {
-        verifyResult: verifyResult
-      };
+      if (identity){
+        ctx.body = {
+          data: "用户已认证"
+        };
+      }else {
+        await ctx.model.Identity.create({
+          idCard,
+          userName,
+          publicKey
+        });
+        const user = ctx.model.User.findOne({
+          email:email
+        });
+        await user.update({
+          isAuthenticated: 1,
+          idCard:idCard
+        });
+        ctx.body = {
+          data: "实名认证成功"
+        };
+      }
     }
 
     // const idCard = "410782199711011276";

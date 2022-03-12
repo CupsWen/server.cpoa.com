@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jtopo</title>
+    <meta charset="utf-8">
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/static/jtopo-min.js"></script>
+</head>
+<body background="/static/images/background.png">
+<!-- <body> -->
+<center>
+    <div id="main">
+        <canvas id="canvas" width="600" height="600"></canvas>
+        <textarea id="showData" cols="50" rows="40" style="width:600px;height:600px;margin:5px"></textarea>
+    </div>
+</center>
+<script>
+
+  const wide = 600;
+  const high = 600;
+
+  let bundleGap = 0;
+  let fillColor = '';
+  // 1. 数据
+  let network = {
+    'orderers': [ [ 'cpoa.order.com', [ 300, 375 ] ], [ 'cpob.order.com', [ 364, 262 ] ], [ 'cpoc.order.com', [ 235, 262 ] ] ],
+    'msp': [ [ 'CPOAMSP', [ [ 'peer0.cpoa.com', [ 478, 395 ] ] ], [ 478, 358 ] ], [ 'CPOBMSP', [ [ 'peer0.cpob.com', [ 410, 185 ] ] ], [ 410, 148 ] ], [ 'CPOCMSP', [ [ 'peer0.cpoc.com', [ 190, 185 ] ] ], [ 190, 148 ] ], [ 'JOMSP', [ [ 'peer0.jo.com', [ 121, 394 ] ] ], [ 121, 357 ] ] ],
+    'ods': [ [ 'CPOAMSP', 'ods.cpoa.com', [ 549, 381 ] ], [ 'CPOBMSP', 'ods.cpob.com', [ 454, 87 ] ], [ 'CPOCMSP', 'ods.cpoc.com', [ 146, 87 ] ] ],
+    'links': [ [ 300, 375, 300, 375 ], [ 300, 375, 364, 262 ], [ 300, 375, 235, 262 ], [ 364, 262, 364, 262 ], [ 364, 262, 235, 262 ], [ 235, 262, 235, 262 ], [ 478, 395, 478, 395 ], [ 410, 185, 410, 185 ], [ 190, 185, 190, 185 ], [ 121, 394, 121, 394 ], [ 478, 395, 364, 262 ], [ 410, 185, 364, 262 ], [ 190, 185, 235, 262 ], [ 121, 394, 235, 262 ] ],
+    'client': {
+      'name': 'server.cpoa.com',
+      'location': [ 1, 550 ],
+      'size': [ 600, 50 ],
+      'endorsement': [ [ 478, 395, '', '', '', '', '', '' ], [ 410, 185, '', '', '', '', '', '' ], [ 190, 185, '', '', '', '', '', '' ], [ 121, 394, '', '', '', '', '', '' ] ],
+      'ods': [ [ 549, 381, '', '', '', '', '', '' ], [ 454, 87, '', '', '', '', '', '' ], [ 146, 87, '', '', '', '', '', '' ] ],
+      'order': [ 300, 375, '', '', '', '', '', '' ]
+    }
+  };
+
+  // 2. 背景
+  let canvas = document.getElementById('canvas');
+  let stage = new JTopo.Stage(canvas);   // 创建一个舞台对象
+  stage.mode = 'drag';
+  let scene = new JTopo.Scene(stage);    // 创建一个场景对象
+  // scene.areaSelect = true;
+  document.onmousedown = function(event) {
+    if (event.button == 0) {            //鼠标左键
+      scene.mode = 'select';
+    } else if (event.button == 2) {     //鼠标右键
+      scene.mode = 'normal';
+    }
+  };
+
+  // fillColor = JTopo.util.randomColor();
+  fillColor = '0,0,255';
+  // 1. Orderers
+  let orderContainer = new JTopo.Container('Orderers');
+  orderContainer.fontColor = '255,255,255';
+  orderContainer.borderColor = '255,0,0';
+  orderContainer.textPosition = 'Bottom_Center';
+  orderContainer.borderRadius = 20;
+  orderContainer.dragable = false;
+  // orderContainer.fillColor = JTopo.util.randomColor();
+  scene.add(orderContainer);
+  for (let index = 0; index < network.orderers.length; index++) {
+    let node = new JTopo.CircleNode(network.orderers[index][0].split('.')[0]);        // 创建一个节点
+    node.setLocation(network.orderers[index][1][0], network.orderers[index][1][1]);   // 设置节点坐标
+    node.fillStyle = '255,255,255';                                                   // 颜色
+    node.radius = 15;                                                                 // 半径
+    node.textPosition = 'Middle_Center';
+    node.textOffsetY = -8;
+    node.fillColor = fillColor;
+    node.dragable = false;
+    node.mouseover(function(event) {
+      node.text = network.orderers[index][0];
+    });
+    node.mouseout(function(event) {
+      node.text = network.orderers[index][0].split('.')[0];
+    });
+    scene.add(node);                                                                  // 加入到场景中
+    orderContainer.add(node);                                                         // 加入到容器中
+    network.orderers[index].push(node);                                               // 保存节点
+  }
+
+  // 2. msp
+  for (let i = 0; i < network.msp.length; i++) {
+    let container = new JTopo.Container(network.msp[i][0]);
+    container.fontColor = '255,255,255';
+    container.borderColor = '255,0,0';
+    container.borderRadius = 20;
+    container.textPosition = 'Bottom_Center';
+    container.dragable = false;
+    scene.add(container);
+    network.msp[i].push(container);
+    // fillColor = JTopo.util.randomColor();
+    for (let j = 0; j < network.msp[i][1].length; j++) {
+      let node = new JTopo.CircleNode(network.msp[i][1][j][0].split('.')[0]);             // 创建一个节点
+      node.setLocation(network.msp[i][1][j][1][0], network.msp[i][1][j][1][1]);           // 设置节点坐标
+      node.textPosition = 'Middle_Center';
+      node.textOffsetY = -8;
+      node.fillStyle = '0,255,0';                                                         // 颜色
+      node.radius = 15;                                                                   // 半径
+      node.fillColor = fillColor;
+      node.dragable = false;
+      node.mouseover(function(event) {
+        node.text = network.msp[i][1][j][0];
+      });
+      node.mouseout(function(event) {
+        node.text = network.msp[i][1][j][0].split('.')[0];
+      });
+      scene.add(node);                                                                    // 加入到场景中
+      container.add(node);
+      network.msp[i][1][j].push(node);
+    }
+  }
+
+  // 3. 线
+  for (let index = 0; index < network.links.length; index++) {
+    let node1 = new JTopo.Node('').setLocation(network.links[index][0], network.links[index][1])
+      .setSize(30, 30);
+    let node2 = new JTopo.Node('').setLocation(network.links[index][2], network.links[index][3])
+      .setSize(30, 30);
+    let link = addLink(node1, node2);
+    scene.add(link);
+  }
+
+  // 4. 客户端
+  // fillColor = JTopo.util.randomColor();
+  let clientNode = new JTopo.Node(network.client.name);
+  clientNode.setLocation(network.client.location[0], network.client.location[1]);
+  clientNode.setSize(network.client.size[0], network.client.size[1]);
+  clientNode.textPosition = 'Middle_Center';
+  clientNode.textOffsetY = -8;
+  clientNode.fillColor = fillColor;
+  clientNode.dragable = false;
+  scene.add(clientNode);
+
+  // 5. ods
+  for (let index = 0; index < network.ods.length; index++) {
+    let node = new JTopo.CircleNode(network.ods[index][1].split('.')[0]);             // 创建一个节点
+    node.setLocation(network.ods[index][2][0], network.ods[index][2][1]);             // 设置节点坐标
+    node.fillStyle = '255,255,255';                                                   // 颜色
+    node.radius = 15;                                                                 // 半径
+    node.textPosition = 'Middle_Center';
+    node.textOffsetY = -8;
+    node.fillColor = fillColor;
+    node.dragable = false;
+    node.mouseover(function(event) {
+      node.text = network.ods[index][1];
+    });
+    node.mouseout(function(event) {
+      node.text = network.ods[index][1].split('.')[0];
+    });
+    scene.add(node);                                                                    // 加入到场景中
+  }
+
+  /**
+   *  WebSocket
+   * **/
+  let ws = new WebSocket('ws://localhost:8181');
+  ws.onopen = function(e) {
+    console.log('客户端（client）：与服务器的连接已打开');
+  };
+
+  ws.onmessage = function(e) {
+    console.log('收到数据：' + e.data);
+    let message = JSON.parse(e.data);
+    changeGraphics(message);
+  };
+
+  /**
+   * TODO: 图形更新模块
+   * **/
+  function changeGraphics(message) {
+    switch (message.type) {
+      case 'workInfo':
+        for (let index = 0; index < network.client.ods.length; index++) {
+          network.client.ods[index][5] = message.data;
+        }
+        for (let index = 0; index < network.client.ods.length; index++) {
+          if (network.client.ods[index][2] !== '') {
+            scene.remove(network.client.ods[index][2]);
+          }
+          let node1 = new JTopo.Node('').setLocation(network.client.ods[index][0] - bundleGap, network.client.location[1])
+            .setSize(30, 30);
+          let node2 = new JTopo.Node('').setLocation(network.client.ods[index][0] - bundleGap, network.client.ods[index][1])
+            .setSize(30, 30);
+          let link = addLink(node1, node2, fillColor, '原创性检测请求');
+          link.arrowsRadius = 10;
+          link.mouseover(function(event) {
+            let data = JSON.parse(network.client.ods[index][5]);
+            $('#showData')
+              .val(JSON.stringify(data, null, '\t'));
+          });
+          link.mouseout(function(event) {
+            link.text = '原创性检测请求';
+          });
+          network.client.ods[index][2] = link;
+          scene.add(link);
+        }
+        break;
+      case 'testResult':
+        let msg__ = JSON.parse(message.data);
+        for (let index = 0; index < network.client.ods.length; index++) {
+          network.client.ods[index][7] = msg__.state[index];
+        }
+        for (let index = 0; index < network.client.ods.length; index++) {
+          network.client.ods[index][6] = msg__.testResult[index];
+        }
+        for (let index = 0; index < network.client.ods.length; index++) {
+          if (network.client.ods[index][2] !== '') {
+            scene.remove(network.client.ods[index][2]);
+          }
+          if (network.client.ods[index][3] !== '') {
+            scene.remove(network.client.ods[index][3]);
+          }
+          let node1 = new JTopo.Node('').setLocation(network.client.ods[index][0] + bundleGap, network.client.location[1])
+            .setSize(30, 30);
+          let node2 = new JTopo.Node('').setLocation(network.client.ods[index][0] + bundleGap, network.client.ods[index][1])
+            .setSize(30, 30);
+          let link = addLink(node2, node1, fillColor, '原创性检测回应');
+          link.arrowsRadius = 10;
+          link.mouseover(function(event) {
+            let data = JSON.parse(network.client.ods[index][6].replace(/'/g, '"'));
+            $('#showData')
+              .val(JSON.stringify(data, null, '\t'));
+          });
+          link.mouseout(function(event) {
+            link.text = '原创性检测回应';
+          });
+          network.client.ods[index][3] = link;
+          scene.add(link);
+
+          if (network.client.ods[index][4] !== '') {
+            scene.remove(network.client.ods[index][4]);
+          }
+          let node = new JTopo.Node();
+          node.setImage('/static/images/ok.png', true);
+          node.setLocation(network.client.ods[index][0], network.client.ods[index][1] - 50);
+          // node.text = "排序结果";
+          node.textPosition = 'Top_Center';
+          scene.add(node);
+        }
+        break;
+      case 'proposal':
+        for (let index = 0; index < network.client.endorsement.length; index++) {
+          network.client.endorsement[index][5] = message.data;
+        }
+        for (let index = 0; index < network.client.ods.length; index++) {
+          if (network.client.ods[index][2] !== '') {
+            scene.remove(network.client.ods[index][2]);
+          }
+          if (network.client.ods[index][3] !== '') {
+            scene.remove(network.client.ods[index][3]);
+          }
+        }
+        for (let index = 0; index < network.client.endorsement.length; index++) {
+          if (network.client.endorsement[index][2] !== '') {
+            scene.remove(network.client.endorsement[index][2]);
+          }
+          let node1 = new JTopo.Node('').setLocation(network.client.endorsement[index][0] - bundleGap, network.client.location[1])
+            .setSize(30, 30);
+          let node2 = new JTopo.Node('').setLocation(network.client.endorsement[index][0] - bundleGap, network.client.endorsement[index][1])
+            .setSize(30, 30);
+          let link = addLink(node1, node2, fillColor, '交易提案');
+          link.arrowsRadius = 10;
+          link.mouseover(function(event) {
+            let data = JSON.parse(network.client.endorsement[index][5]);
+            $('#showData')
+              .val(JSON.stringify(data, null, '\t'));
+          });
+          link.mouseout(function(event) {
+            link.text = '交易提案';
+          });
+          network.client.endorsement[index][2] = link;
+          scene.add(link);
+        }
+        break;
+      case 'proposalResponse':
+        let msg = JSON.parse(message.data);
+        for (let index = 0; index < network.client.endorsement.length; index++) {
+          network.client.endorsement[index][7] = msg.state[index];
+        }
+        for (let index = 0; index < network.client.endorsement.length; index++) {
+          network.client.endorsement[index][6] = msg.proposalResponse[index];
+        }
+        for (let index = 0; index < network.client.endorsement.length; index++) {
+          if (network.client.endorsement[index][2] !== '') {
+            scene.remove(network.client.endorsement[index][2]);
+          }
+          if (network.client.endorsement[index][3] !== '') {
+            scene.remove(network.client.endorsement[index][3]);
+          }
+          let node1 = new JTopo.Node('').setLocation(network.client.endorsement[index][0] + bundleGap, network.client.location[1])
+            .setSize(30, 30);
+          let node2 = new JTopo.Node('').setLocation(network.client.endorsement[index][0] + bundleGap, network.client.endorsement[index][1])
+            .setSize(30, 30);
+          let link = addLink(node2, node1, fillColor, '提案响应');
+          link.arrowsRadius = 10;
+          link.mouseover(function(event) {
+            let data = JSON.parse(network.client.endorsement[index][6].replace(/'/g, '"'));
+            $('#showData')
+              .val(JSON.stringify(data, null, '\t'));
+          });
+          link.mouseout(function(event) {
+            link.text = '提案响应';
+          });
+          network.client.endorsement[index][3] = link;
+          scene.add(link);
+
+          if (network.client.endorsement[index][4] !== '') {
+            scene.remove(network.client.endorsement[index][4]);
+          }
+          let node = new JTopo.Node();
+          node.setImage('/static/images/ok.png', true);
+          node.setLocation(network.client.endorsement[index][0], network.client.endorsement[index][1] - 50);
+          // node.text = "排序结果";
+          node.textPosition = 'Top_Center';
+          scene.add(node);
+        }
+        break;
+      case 'envelop':
+        network.client.order[5] = message.data;
+        for (let index = 0; index < network.client.endorsement.length; index++) {
+          if (network.client.endorsement[index][3] !== '') {
+            scene.remove(network.client.endorsement[index][3]);
+          }
+        }
+        if (network.client.order[3] !== '') {
+          scene.remove(network.client.order[3]);
+        }
+        let node1 = new JTopo.Node('').setLocation(network.client.order[0] - bundleGap, network.client.location[1])
+          .setSize(30, 30);
+        let node2 = new JTopo.Node('').setLocation(network.client.order[0] - bundleGap, network.client.order[1])
+          .setSize(30, 30);
+        let link = addLink(node1, node2, fillColor, '交易请求');
+        link.arrowsRadius = 10;
+        link.mouseover(function(event) {
+          let data = JSON.parse(network.client.order[5]);
+          $('#showData')
+            .val(JSON.stringify(data, null, '\t'));
+        });
+        link.mouseout(function(event) {
+          link.text = '交易请求';
+        });
+        network.client.order[2] = link;
+        scene.add(link);
+        break;
+      case 'block':
+        let msg_ = JSON.parse(message.data);
+        network.client.order[7] = msg_.state;
+        network.client.order[6] = msg_.block;
+        // fillColor = JTopo.util.randomColor();
+        if (network.client.order[2] !== '') {
+          scene.remove(network.client.order[2]);
+        }
+        if (network.client.order[3] !== '') {
+          scene.remove(network.client.order[3]);
+        }
+        let node3 = new JTopo.Node('').setLocation(network.client.order[0] + bundleGap, network.client.location[1])
+          .setSize(30, 30);
+        let node4 = new JTopo.Node('').setLocation(network.client.order[0] + bundleGap, network.client.order[1])
+          .setSize(30, 30);
+        let link_ = addLink(node4, node3, fillColor, '交易结果');
+        link_.mouseover(function(event) {
+          console.log(network.client.order[6]);
+          let data = JSON.parse(network.client.order[6].replace(/'/g, '"'));
+          $('#showData')
+            .val(JSON.stringify(data, null, '\t'));
+          // let data = JSON.parse(network.client.order[6]);
+          // $("#showData").val(JSON.stringify(data, null, "\t"));
+        });
+        link_.mouseout(function(event) {
+          link_.text = '交易结果';
+        });
+        link_.arrowsRadius = 10;
+        network.client.order[3] = link_;
+        scene.add(link_);
+
+        if (network.client.order[4] !== '') {
+          scene.remove(network.client.order[4]);
+        }
+        let node = new JTopo.Node();
+        if (network.client.order[7] == 1) {
+          node.setImage('/static/images/ok.png', true);
+        } else {
+          node.setImage('/static/images/err.png', true);
+        }
+        node.setLocation(network.client.order[0], network.client.order[1] - 50);
+        // node.text = "排序结果";
+        // node.textPosition = "Top_Center";
+        network.client.order[4] = node;
+        scene.add(node);
+        break;
+      case 'end':
+        console.log(network);
+        scene.remove(network.client.order[3]);
+        for (let index = 0; index < network.client.ods.length; index++) {
+          scene.add(network.client.ods[index][2]);
+          network.client.ods[index][2].mouseover(function(event) {
+            // network.client.endorsement[index][2].text = network.client.order[5];
+            let data = JSON.parse(network.client.ods[index][5]);
+            $('#showData')
+              .val(JSON.stringify(data, null, '\t'));
+          });
+          network.client.ods[index][2].mouseout(function(event) {
+            network.client.ods[index][2].text = '原创性检测请求';
+          });
+          scene.add(network.client.ods[index][3]);
+          network.client.ods[index][3].mouseover(function(event) {
+            // network.client.endorsement[index][3].text = network.client.order[5];
+            let data = JSON.parse(network.client.ods[index][6].replace(/'/g, '"'));
+            $('#showData')
+              .val(JSON.stringify(data, null, '\t'));
+          });
+          network.client.ods[index][3].mouseout(function(event) {
+            network.client.ods[index][3].text = '原创性检测回应';
+          });
+        }
+        for (let index = 0; index < network.client.endorsement.length; index++) {
+          scene.add(network.client.endorsement[index][2]);
+          network.client.endorsement[index][2].mouseover(function(event) {
+            // network.client.endorsement[index][2].text = network.client.order[5];
+            let data = JSON.parse(network.client.endorsement[index][5]);
+            $('#showData')
+              .val(JSON.stringify(data, null, '\t'));
+          });
+          network.client.endorsement[index][2].mouseout(function(event) {
+            network.client.endorsement[index][2].text = '交易提案';
+          });
+          scene.add(network.client.endorsement[index][3]);
+          network.client.endorsement[index][3].mouseover(function(event) {
+            // network.client.endorsement[index][3].text = network.client.order[5];
+            let data = JSON.parse(network.client.endorsement[index][6].replace(/'/g, '"'));
+            $('#showData')
+              .val(JSON.stringify(data, null, '\t'));
+          });
+          network.client.endorsement[index][3].mouseout(function(event) {
+            network.client.endorsement[index][3].text = '提案响应';
+          });
+        }
+        scene.add(network.client.order[2]);
+        network.client.order[2].mouseover(function(event) {
+          network.client.order[2].text = '交易请求';
+          let data = JSON.parse(network.client.order[5]);
+          $('#showData')
+            .val(JSON.stringify(data, null, '\t'));
+        });
+        network.client.order[2].mouseout(function(event) {
+          network.client.order[2].text = '交易请求';
+        });
+        scene.add(network.client.order[3]);
+        network.client.order[3].mouseover(function(event) {
+          network.client.order[3].text = '交易结果';
+          let data = JSON.parse(network.client.order[6].replace(/'/g, '"'));
+          $('#showData')
+            .val(JSON.stringify(data, null, '\t'));
+        });
+        network.client.order[3].mouseout(function(event) {
+          network.client.order[3].text = '交易结果';
+        });
+        alert('transactionID:bee8668f4c51fa7c617b2f705b16d3dd865d1c485fe58625632617e0e7337641');
+        break;
+      default:
+        break;
+    }
+  }
+
+
+  // 简单连线
+  function addLink(nodeA, nodeZ, color, text) {
+    let link = new JTopo.Link(nodeA, nodeZ, text);  // 连接线
+    link.lineWidth = 3; // 线宽
+    link.bundleOffset = 60; // 折线拐角处的长度
+    link.bundleGap = 20; // 线条之间的间隔
+    link.textOffsetY = 3; // 文本偏移量（向下3个像素）
+    link.dashedPattern = 5;
+    if (color) {
+      link.strokeColor = color;                   // 颜色
+      link.fontColor = color;
+    } else {
+      link.strokeColor = '0,200,255';             // 颜色
+    }
+    return link;
+  }
+</script>
+</body>
+</html>

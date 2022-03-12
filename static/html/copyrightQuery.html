@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<center>
+    <div id="login">
+        <input id="transactionID" type="text" maxlength="200" required="required" placeholder="请输入摄影作品哈希值"
+               style="height: 30px;width: 480px"/>
+        <button class="but" id="queryWork" onclick="query()">版权查询</button>
+        <textarea id="showData" cols="50" rows="40" style="width:480px;height:480px;margin:5px"></textarea>
+    </div>
+</center>
+</body>
+</html>
+<script type="text/javascript">
+  function query() {
+    let datajson = {
+      workInfo:
+        {
+          workHash: '84aced6f4b5dab82cf5f78cde6ac92e9',
+          publicKey:
+            '-----BEGIN PUBLIC KEY-----\nMFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKmTlv0L+l1svwPKxwKvKpBZwWaPRRFP\nKsWLfMWkoDuQtrVOrsoLvaVArhbKyBpWdz/ggrxlQd3gPqyzjgxQHGkCAwEAAQ==\n-----END PUBLIC KEY-----',
+          workName: '快乐喵',
+          workDescribe: '以猫夸张的表情，表达中学生所期望的快乐生活。',
+          workAddress: 'QmRk2S1bL7EhByhxt89zUF7BkoYWysV6rYgi7BGQdgmqot'
+        },
+      testResultList: [
+        '{"workHash":"84aced6f4b5dab82cf5f78cde6ac92e9","mspId":"CPOAMSP","isPass":1,"evaluation":0.47,"signature":"4920585435062523405742026865024973577556600459207414867093375766139711947539541046749368404860242832237269283594304450154320949529876792451043303576168529"}',
+        '{"workHash":"84aced6f4b5dab82cf5f78cde6ac92e9","mspId":"CPOAMSP","isPass":1,"evaluation":0.47,"signature":"4920585435062523405742026865024973577556600459207414867093375766139711947539541046749368404860242832237269283594304450154320949529876792451043303576168529"}',
+        '{"workHash":"84aced6f4b5dab82cf5f78cde6ac92e9","mspId":"CPOCMSP","isPass":1,"evaluation":0.47,"signature":"5074408992778471340156896983929744507714990363023956602201007305565093423172286233722335410789707641631152800476298574429354279327126283058232366732217150"}'
+      ]
+    };
+    console.log(datajson);
+    let text = "";
+    text += "摄影作品哈希值:" +  datajson.workInfo.workHash + "\r\n";
+    text += "摄影作品创作者公钥:" +  datajson.workInfo.publicKey + "\r\n";
+    text += "摄影作品名称:" +  datajson.workInfo.workName + "\r\n";
+    text += "摄影作品描述:" +  datajson.workInfo.workDescribe + "\r\n";
+    text += "公钥加密摄影作品存储地址:" +  datajson.workInfo.workAddress + "\r\n";
+    text += "是否通过原创性检测:1" + "\r\n";
+    text += "美学质量评价:0.47" + "\r\n";
+    text += "原创性证明:" +  datajson.testResultList + "\r\n";
+
+    document.getElementById("showData").innerHTML = text;
+    // $("#showData").val();
+    // $("message").val(JSON.stringify(datajson, null, "\t"));
+  }
+</script>
+<style>
+    body {
+        width: 100%;
+        height: 100%;
+        font-family: 'Open Sans', sans-serif;
+        margin: 0;
+        background-color: #4A374A;
+    }
+
+    #login {
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        margin: -150px 0 0 -150px;
+        width: 300px;
+        height: 300px;
+    }
+
+    #login h1 {
+        color: #fff;
+        text-shadow: 0 0 10px;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 2em;
+        margin: 0.67em 0;
+    }
+
+    input {
+        width: 500px;
+        height: 80px;
+        margin-bottom: 10px;
+        outline: none;
+        padding: 10px;
+        font-size: 13px;
+        color: #fff;
+        text-shadow: 1px 1px 1px;
+        border-top: 1px solid #312E3D;
+        border-left: 1px solid #312E3D;
+        border-right: 1px solid #312E3D;
+        border-bottom: 1px solid #56536A;
+        border-radius: 4px;
+        background-color: #2D2D3F;
+    }
+
+    .but {
+        width: 500px;
+        min-height: 20px;
+        display: block;
+        background-color: #4a77d4;
+        border: 1px solid #3762bc;
+        color: #fff;
+        padding: 10px;
+        font-size: 15px;
+        line-height: normal;
+        border-radius: 5px;
+        margin: 0;
+    }
+</style>
